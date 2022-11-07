@@ -1,0 +1,46 @@
+#login-container {
+  text-align: center;
+}
+
+#login {
+  border: 1px solid grey;
+  width: 335px;
+  margin: 3% auto 0 auto;
+  padding: 1%;
+  border-radius: 1%;
+  box-shadow: 5px 5px 10px grey;
+}
+#login-title {
+    position: relative;
+    text-align: center;
+  }
+#login-form h2::before,
+#login-form h2::after {
+  content: "";
+  height: 2px;
+  width: 25%;
+  background: #d4d4d4;
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+}
+
+#login-form h2::after {
+  left: 0;
+}
+#login-form h2::before {
+  right: 0;
+}
+
+#login-form {
+  margin: 0 5%;
+}
+
+.input-placeholder-label {
+  color: grey;
+}
+
+
+#invalid-userpass {
+  color: red;
+}

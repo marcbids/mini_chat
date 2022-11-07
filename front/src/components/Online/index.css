@@ -1,0 +1,10 @@
+.chatOnline {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.onlineBadge {
+    font-size: 12px;
+}

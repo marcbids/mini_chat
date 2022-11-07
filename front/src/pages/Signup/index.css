@@ -1,0 +1,50 @@
+#register-container {
+  text-align: center;
+}
+#register {
+  border: 1px solid grey;
+  width: 400px;
+  margin: 3% auto 0 auto;
+  padding: 1%;
+  border-radius: 1%;
+  box-shadow: 5px 5px 10px grey;
+}
+
+#register-form {
+  margin: 0 5%;
+}
+
+#register-title {
+  position: relative;
+  text-align: center;
+}
+
+#register-form h2::before,
+#register-form h2::after {
+  content: "";
+  height: 2px;
+  width: 30%;
+  background: #d4d4d4;
+  position: absolute;
+  top: 20%;
+  z-index: 2;
+}
+
+#register-form h2::after {
+  left: 0;
+}
+#register-form h2::before {
+  right: 0;
+}
+
+.container.register-button {
+  display: block;
+}
+
+.register-input-placeholder-label {
+  color: grey;
+}
+
+#mismatch-pass {
+  color: red;
+}
