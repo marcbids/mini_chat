@@ -15,7 +15,7 @@ cd chat_app
 npm install
 npm run initial
 ```
-3. Create an `.env` file and input 
+3. Create an `.env` file in `./front` folger and input 
 ```
 REACT_APP_BACK_END_LINK=http://localhost:8000/api
 ```
