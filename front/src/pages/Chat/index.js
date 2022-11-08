@@ -22,18 +22,21 @@ export const Chat = () => {
   const [currentReceiver, setCurrentReceiver] = useState("");
   const [allUsers, setAllUsers] = useState([]);
   const [deleteChat, setDeleteChat] = useState(false);
-  const [newUser, setNewUser] = useState(false);
   const audio = new Audio(notif);
 
   useEffect(() => {
     socket.current = io("ws://localhost:8900");
-    socket.current.on("getMessage", (data) => {
-      setArrivalMessage({
-        sender: data.sender,
-        message: data.message,
-        createdAt: Date.now(),
-      });
-    });
+    socket.current.on(
+      "getMessage",
+      (data) => {
+        setArrivalMessage({
+          sender: data.sender,
+          message: data.message,
+          createdAt: Date.now(),
+        });
+      },
+      (err) => console.log(err)
+    );
     socket.current.on("pong", (params) => {
       setDeleteChat(true);
     });
@@ -55,7 +58,7 @@ export const Chat = () => {
   };
 
   const send = (receiverId) => {
-    socket.current.emit("sendMessage", {
+    socket.current.volatile.emit("sendMessage", {
       sender: user.id,
       receiver: receiverId,
       message: newMessage,
@@ -64,16 +67,13 @@ export const Chat = () => {
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      getConversation();
-    }, 300);
+    getConversation();
     getUsers();
   }, [user.id, deleteChat, arrivalMessage]);
 
   const notify = (params) => toast(params);
 
   const updateCurrentChat = () => {
-    console.log(currentChat);
     let user = allUsers.filter((e) => arrivalMessage.sender == e._id);
 
     let current = conversation.filter((e) => e.members.includes(user[0]._id));
@@ -141,13 +141,11 @@ export const Chat = () => {
   };
   useEffect(() => {
     try {
-      setTimeout(() => {
-        getChat();
-      }, 300);
+      getChat();
     } catch (e) {
       // console.log("No chat history");
     }
-  }, [newMessage, deleteChat]);
+  }, [currentChat, newMessage, deleteChat]);
 
   const getChat = () => {
     const options = {
@@ -169,8 +167,6 @@ export const Chat = () => {
   }, [messages]);
 
   const handleSubmit = (e) => {
-    console.log(currentChat);
-    console.log(currentReceiver);
     e.preventDefault();
     let receiverId;
     if (currentChat === "") {
