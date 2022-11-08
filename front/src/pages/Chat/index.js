@@ -1,4 +1,6 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { Conversation, Chatbox, Online } from "../../components";
 import { UserContext } from "../../userContext";
 import AppHelper from "../../app-helper";
@@ -18,18 +20,10 @@ export const Chat = () => {
   const [newMessage, setNewMessage] = useState("");
   const [onlineUsers, setOnlineUsers] = useState(null);
   const [currentReceiver, setCurrentReceiver] = useState("");
+  const [allUsers, setAllUsers] = useState([]);
+  const [deleteChat, setDeleteChat] = useState(false);
+  const [newUser, setNewUser] = useState(false);
   const audio = new Audio(notif);
-
-  useEffect(() => {
-    getConversation();
-  }, [user.id, messages]);
-
-  useEffect(() => {
-    if (arrivalMessage != null) {
-      console.log("new message");
-      audio.play();
-    }
-  }, [arrivalMessage]);
 
   useEffect(() => {
     socket.current = io("ws://localhost:8900");
@@ -40,15 +34,77 @@ export const Chat = () => {
         createdAt: Date.now(),
       });
     });
+    socket.current.on("pong", (params) => {
+      setDeleteChat(true);
+    });
   }, []);
+
   useEffect(() => {
-    if (typeof user.id !== "undefined") {
+    if (typeof user.id !== "undefined" && user.id != null) {
       socket.current.emit("addUser", user.id);
       socket.current.on("getUsers", (users) => {
         setOnlineUsers(users);
       });
     }
   }, [user.id]);
+
+  const test = (params) => {
+    let receiverId = params.members.find((member) => member !== user.id);
+    setDeleteChat((e) => !e);
+    socket.current.emit("ping", receiverId);
+  };
+
+  const send = (receiverId) => {
+    socket.current.emit("sendMessage", {
+      sender: user.id,
+      receiver: receiverId,
+      message: newMessage,
+    });
+    setNewMessage("");
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      getConversation();
+    }, 300);
+    getUsers();
+  }, [user.id, deleteChat, arrivalMessage]);
+
+  const notify = (params) => toast(params);
+
+  const updateCurrentChat = () => {
+    console.log(currentChat);
+    let user = allUsers.filter((e) => arrivalMessage.sender == e._id);
+
+    let current = conversation.filter((e) => e.members.includes(user[0]._id));
+    setCurrentChat(current[0]);
+  };
+
+  const getUsers = () => {
+    const options = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    try {
+      fetch(`${AppHelper.API_URL}/users/all/`, options)
+        .then(AppHelper.toJSON)
+        .then((data) => {
+          setAllUsers(data);
+        });
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    if (arrivalMessage != null && currentChat != "") {
+      let user = allUsers.filter((e) => arrivalMessage.sender == e._id);
+      audio.play();
+      notify(`New message from ${user[0].name}`);
+      arrivalMessage &&
+        currentChat?.members.includes(arrivalMessage.sender) &&
+        setMessages((prev) => [...prev, arrivalMessage]);
+    }
+  }, [arrivalMessage]);
 
   const getConversation = () => {
     const options = {
@@ -63,6 +119,7 @@ export const Chat = () => {
       })
       .catch((e) => e);
   };
+
   const newConversation = () => {
     const options = {
       senderId: user.id,
@@ -79,17 +136,18 @@ export const Chat = () => {
         })
         .then((data) => {
           setMessages([...messages, data.data]);
-          getConversation();
         });
     });
   };
   useEffect(() => {
     try {
-      getChat();
+      setTimeout(() => {
+        getChat();
+      }, 300);
     } catch (e) {
       // console.log("No chat history");
     }
-  }, [currentChat, newMessage]);
+  }, [newMessage, deleteChat]);
 
   const getChat = () => {
     const options = {
@@ -111,6 +169,8 @@ export const Chat = () => {
   }, [messages]);
 
   const handleSubmit = (e) => {
+    console.log(currentChat);
+    console.log(currentReceiver);
     e.preventDefault();
     let receiverId;
     if (currentChat === "") {
@@ -139,21 +199,6 @@ export const Chat = () => {
     }
   };
 
-  const send = (receiverId) => {
-    socket.current.emit("sendMessage", {
-      sender: user.id,
-      receiver: receiverId,
-      message: newMessage,
-    });
-    setNewMessage("");
-  };
-
-  useEffect(() => {
-    arrivalMessage &&
-      currentChat?.members.includes(arrivalMessage.sender) &&
-      setMessages((prev) => [...prev, arrivalMessage]);
-  }, [arrivalMessage]);
-
   return (
     <>
       <div id="chat-window">
@@ -167,7 +212,7 @@ export const Chat = () => {
             {conversation.length
               ? conversation.map((e, index) => (
                   <div onClick={() => setCurrentChat(e)} key={index}>
-                    <Conversation data={e} currentUser={user} />
+                    <Conversation data={e} currentUser={user} test={test} />
                   </div>
                 ))
               : null}
@@ -212,6 +257,19 @@ export const Chat = () => {
           </div>
         </div>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        onClick={updateCurrentChat}
+      />
     </>
   );
 };

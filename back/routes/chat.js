@@ -16,14 +16,13 @@ router.get("/:conversationId", (req, res) => {
     .catch((e) => res.status(500).send(e));
 });
 
-router.delete("/delete/:id", (req, res) => {
-  chatController
-    .delete(req.params.id)
-    .then((res) => {
-      console.log(res);
-      res.status(200).send(res);
-    })
-    .catch((e) => res.status(500).send(e));
+router.delete("/delete/:id", async (req, res) => {
+  try {
+    let result = await chatController.delete(req.params.id);
+    res.status(200).send(result);
+  } catch (e) {
+    res.status(500).send(e);
+  }
 });
 
 module.exports = router;

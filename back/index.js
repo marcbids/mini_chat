@@ -11,16 +11,7 @@ const url =
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-mongoose.connect(url, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  autoIndex: true,
-});
-
-mongoose.connection.on(
-  "error",
-  console.error.bind(console, "Connection Error")
-);
+mongoose.connect(url);
 
 mongoose.connection.once("open", () =>
   console.log("Now connected to MongoDB Atlas.")

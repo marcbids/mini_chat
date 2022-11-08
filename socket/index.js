@@ -22,6 +22,11 @@ io.on("connection", (socket) => {
     io.emit("getUsers", users);
   });
 
+  socket.on("ping", (test) => {
+    const user = getUser(test);
+    io.to(user.socketId).emit("pong", "A chat has been deleted");
+  });
+
   socket.on("sendMessage", ({ sender, receiver, message }) => {
     const user = getUser(receiver);
     io.to(user.socketId).emit("getMessage", {
@@ -44,8 +49,10 @@ const removeUser = (socketId) => {
   users = users.filter((user) => user.socketId !== socketId);
 };
 const addUser = (userId, socketId) => {
-  !users.some((user) => user.userId === userId) &&
-    users.push({ userId, socketId });
+  if (userId) {
+    !users.some((user) => user.userId === userId) &&
+      users.push({ userId, socketId });
+  }
 };
 
 httpServer.listen(8900);

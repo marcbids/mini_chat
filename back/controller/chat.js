@@ -14,7 +14,8 @@ module.exports.getChat = (params) => {
 };
 
 module.exports.delete = (params) => {
-  return Chat.deleteMany({ conversationId: params }).then((data, err) => {
-    err ? err : true;
+  return Chat.deleteMany({ conversationId: params }).then((err) => {
+    if (err) return err;
+    return true;
   });
 };

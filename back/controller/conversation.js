@@ -30,7 +30,8 @@ module.exports.getConv = ({ firstUserId, secondUserId }) => {
 };
 
 module.exports.delete = (params) => {
-  return Conversation.findByIdAndDelete(params).then((data, err) => {
-    err ? err : true;
+  return Conversation.findByIdAndDelete(params).then((err) => {
+    if (err) return err;
+    return true;
   });
 };
