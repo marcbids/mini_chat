@@ -10,7 +10,7 @@ export const NavBar = () => {
   return (
     <Navbar bg="light" expand="lg">
       <Container fluid>
-        <Navbar.Brand href="#">Navbar</Navbar.Brand>
+        <Navbar.Brand href="#">Mini-Chat</Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar">
           <Nav className="ms-auto" style={{ maxHeight: "100px" }}>
