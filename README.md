@@ -7,7 +7,7 @@ Mini chat app using MERN stack
 ## Setting up the Application
 1. git clone the project 
 ```
-https://github.com/marcbids/serino_mini_project.git
+https://github.com/marcbids/mini_chat.git
 ```
 2. install dependencies 
 ```
