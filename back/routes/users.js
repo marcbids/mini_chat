@@ -67,7 +67,6 @@ router.get("/all", (req, res) => {
 });
 
 router.post("/update", (req, res) => {
-  console.log(req);
   const token = req.headers.authorization;
   const user = auth.decode(token).id;
 

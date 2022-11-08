@@ -23,7 +23,7 @@ export const Footer = () => {
           <Row className="g-0">
             <Col align="center">
               <div id="footer-content">
-                <span>&copy; Marco Bidayo | Web Developer Portfolio</span>
+                <span>&copy; Marco Bidayo | Web Developer</span>
               </div>
             </Col>
             <Col align="center">

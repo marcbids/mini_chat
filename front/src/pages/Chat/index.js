@@ -26,17 +26,13 @@ export const Chat = () => {
 
   useEffect(() => {
     socket.current = io("ws://localhost:8900");
-    socket.current.on(
-      "getMessage",
-      (data) => {
-        setArrivalMessage({
-          sender: data.sender,
-          message: data.message,
-          createdAt: Date.now(),
-        });
-      },
-      (err) => console.log(err)
-    );
+    socket.current.on("getMessage", (data) => {
+      setArrivalMessage({
+        sender: data.sender,
+        message: data.message,
+        createdAt: Date.now(),
+      });
+    });
     socket.current.on("pong", (params) => {
       setDeleteChat(true);
     });
@@ -69,7 +65,7 @@ export const Chat = () => {
   useEffect(() => {
     getConversation();
     getUsers();
-  }, [user.id, deleteChat, arrivalMessage]);
+  }, [user.id, deleteChat, arrivalMessage, currentChat]);
 
   const notify = (params) => toast(params);
 
@@ -119,7 +115,6 @@ export const Chat = () => {
       })
       .catch((e) => e);
   };
-
   const newConversation = () => {
     const options = {
       senderId: user.id,

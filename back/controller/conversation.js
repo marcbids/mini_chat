@@ -2,7 +2,6 @@ const Conversation = require("../model/conversation");
 
 // create a new converstaion
 module.exports.newConversation = (params) => {
-  console.log(params);
   const { senderId, receiverId } = params;
   const conversation = new Conversation({
     members: [senderId, receiverId],

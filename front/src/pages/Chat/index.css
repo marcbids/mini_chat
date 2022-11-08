@@ -1,76 +1,104 @@
 #chat-window {
-    height: calc(100vh - 70px);
-    display: flex;
+  height: calc(100vh - 70px);
+  display: flex;
 }
 #conversationsMenu {
-    flex: 3.5;     
-    height: 95%;
+  flex: 3.5;
+  height: 95%;
 }
 
 .conversationInput {
-    width: 90%;
-    padding: 10px 0;
-    border: none;
-    border-bottom: 1px solid gray;
+  width: 90%;
+  padding: 10px 0;
+  border: none;
+  border-bottom: 1px solid gray;
 }
 
 #chatbox {
-    flex: 5.5;
-    margin-bottom: 3%;
+  flex: 5.5;
+  margin-bottom: 3%;
 }
 
 .chatboxContainer {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 20%;
-    position: relative;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20%;
+  position: relative;
 }
 .chatboxTop {
-    height: 100%;
-    overflow-y: scroll;
-    padding-right: 10px;
+  height: 100%;
+  overflow-y: scroll;
+  padding-right: 10px;
 }
 
 .chatboxBot {
-    margin-top: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  position: relative;
 }
 
 .chatboxinput {
-    width: 80%;
-    height: 90px;
-    padding: 10px;
+  padding: 10px 85px 10px 10px;
+  width: 90%;
+  height: 90px;
+  border-radius: 25px;
+  resize: none;
+  overflow-y: hidden;
+  scale: inherit;
+}
+
+.chatboxinput::placeholder {
+  position: absolute;
+  top: 27px;
+  left: 27px;
+}
+
+.chatboxinput:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  position: absolute;
+  top: 27px;
+  left: 27px;
+}
+
+.chatboxinput::-ms-input-placeholder {
+  /* Microsoft Edge */
+  position: absolute;
+  top: 27px;
+  left: 27px;
 }
 
 .chatboxSubmit {
-    width: 70px;
-    height: 40px;
-    border:none;
-    border-radius: 5px;
-    background-color: rgb(150, 237, 19);
-    color: black;
+  width: 70px;
+  height: 40px;
+  border: none;
+  border-radius: 5px;
+  background-color: rgb(150, 237, 19);
+  color: black;
+  position: absolute;
+  right: 40px;
 }
 
-.conversationContainer, .chatboxContainer {
-    padding: 10px;
-    height: 100%;
+.conversationContainer,
+.chatboxContainer {
+  padding: 10px;
+  height: 100%;
 }
 
 .conversationContainer {
-    overflow-y: scroll;
+  overflow-y: scroll;
 }
 
 .no-chat {
-    position: absolute;
-    top: 10%;
-    font-size: 50px;
-    color:gray;
-    text-align: center;
-    cursor: default;
+  position: absolute;
+  top: 10%;
+  font-size: 50px;
+  color: gray;
+  text-align: center;
+  cursor: default;
 }
 
 #onlines {
-    flex: 3;
+  flex: 3;
 }

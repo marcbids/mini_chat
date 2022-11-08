@@ -20,12 +20,13 @@ io.on("connection", (socket) => {
   socket.on("addUser", (userId) => {
     addUser(userId, socket.id);
     io.emit("getUsers", users);
-    console.log(users);
   });
 
   socket.on("ping", (test) => {
     const user = getUser(test);
-    io.to(user.socketId).emit("pong", "A chat has been deleted");
+    if (user) {
+      io.to(user.socketId).emit("pong", "A chat has been deleted");
+    }
   });
 
   socket.volatile.on("sendMessage", ({ sender, receiver, message }) => {

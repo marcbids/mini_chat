@@ -21,7 +21,6 @@ router.get("/find/:firstUserId/:secondUserId", (req, res) => {
   conversationController
     .getConv(req.params)
     .then((result) => {
-      console.log(result);
       res.status(200).send(result);
     })
     .catch((e) => res.status(500).send(e));
